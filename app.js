@@ -1,7 +1,7 @@
 // Mini Project - Pertemuan 3-4: RESTful API CRUD dengan Express.js
-// Entitas: mahasiswa (id, nama, jurusan)
+// Entitas: bahasa pemrograman (id, nama, kategori, populer)
 //
-// TODO Mahasiswa: lengkapi setiap handler di bawah ini sesuai komentar.
+// TODO Bahasa Pemrograman: lengkapi setiap handler di bawah ini sesuai komentar.
 // Jalankan dengan: npm install && npm start
 
 const express = require("express");
@@ -10,62 +10,55 @@ const PORT = 3000;
 
 app.use(express.json());
 
-let mahasiswa = [
-  { id: 1, nama: "Andi", jurusan: "Sistem Informasi", aktif: true },
-  { id: 2, nama: "Budi", jurusan: "Informatika", aktif: false },
+let bahasaPemrograman = [
+  { id: 1, nama: "Python", kategori: "Scripting & Data Science", populer: true },
+  { id: 2, nama: "Java", kategori: "OOP & Enterprise", populer: true },
+  { id: 3, nama: "JavaScript", kategori: "Web & Frontend", populer: true },
 ];
 
-// TODO 1: GET /mahasiswa -> kirim seluruh data sebagai JSON
-app.get("/mahasiswa", (req, res) => {
-  res.json(mahasiswa);
+app.get("/bahasa", (req, res) => {
+  res.json(bahasaPemrograman);
 });
 
-// latihan 1
-// buat fungsi untuk mengambil data mahasiswa aktif, dengan alamt : /mahasiswa/aktif
-app.get("/mahasiswa/aktif", (req, res) => {
-  const mahasiswaAktif = mahasiswa.filter((item) => item.aktif === true);
-  res.json(mahasiswaAktif);
+app.get("/bahasa/populer", (req, res) => {
+  const bahasaPopuler = bahasaPemrograman.filter((item) => item.populer === true);
+  res.json(bahasaPopuler);
 });
 
-// TODO 2: GET /mahasiswa/:id -> cari data berdasarkan id,
-// kirim 404 dengan { message: 'Data tidak ditemukan' } jika tidak ada
-app.get("/mahasiswa/:id", (req, res) => {
+app.get("/bahasa/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const m = mahasiswa.find((item) => item.id === id);
-  if (!m) return res.status(404).json({ message: "Data tidak ditemukan" });
-  res.json(m);
+  const bahasa = bahasaPemrograman.find((item) => item.id === id);
+  if (!bahasa) return res.status(404).json({ message: "Data tidak ditemukan" });
+  res.json(bahasa);
 });
 
-// TODO 3: POST /mahasiswa -> ambil { nama, jurusan } dari req.body,
-// buat objek baru dengan id = mahasiswa.length + 1, simpan ke array,
-// kirim response dengan status 201
-app.post("/mahasiswa", (req, res) => { 
-  const { nama, jurusan, aktif } = req.body; //this thing
-  const id = mahasiswa.length + 1;
-  const baru = { id, nama, jurusan, aktif: typeof aktif === "boolean" ? aktif : true };
-  mahasiswa.push(baru);
+app.post("/bahasa", (req, res) => {
+  const { nama, kategori, populer } = req.body;
+  const id = bahasaPemrograman.length + 1;
+  const baru = {
+    id,
+    nama,
+    kategori,
+    populer: typeof populer === "boolean" ? populer : true,
+  };
+
+  bahasaPemrograman.push(baru);
   res.status(201).json(baru);
 });
 
-// TODO 4: PUT /mahasiswa/:id -> cari index berdasarkan id,
-// jika tidak ditemukan kirim 404, jika ditemukan gabungkan data lama
-// dengan req.body lalu kirim data yang telah diperbarui
-app.put("/mahasiswa/:id", (req, res) => {
+app.put("/bahasa/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const idx = mahasiswa.findIndex((item) => item.id === id);
+  const idx = bahasaPemrograman.findIndex((item) => item.id === id);
   if (idx === -1) return res.status(404).json({ message: "Data tidak ditemukan" });
-  mahasiswa[idx] = { ...mahasiswa[idx], ...req.body };
-  res.json(mahasiswa[idx]);
+  bahasaPemrograman[idx] = { ...bahasaPemrograman[idx], ...req.body };
+  res.json(bahasaPemrograman[idx]);
 });
 
-// TODO 5: DELETE /mahasiswa/:id -> cari index berdasarkan id,
-// jika tidak ditemukan kirim 404, jika ditemukan hapus dari array
-// dan kirim response dengan status 204
-app.delete("/mahasiswa/:id", (req, res) => {
+app.delete("/bahasa/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const idx = mahasiswa.findIndex((item) => item.id === id);
+  const idx = bahasaPemrograman.findIndex((item) => item.id === id);
   if (idx === -1) return res.status(404).json({ message: "Data tidak ditemukan" });
-  mahasiswa.splice(idx, 1);
+  bahasaPemrograman.splice(idx, 1);
   res.status(204).send();
 });
 
