@@ -1,0 +1,303 @@
+{
+  "info": {
+    "_postman_id": "f6c4d7d2-7c0d-4d81-9b0f-41ab0d4cc7de",
+    "name": "necronomiCODE API",
+    "description": "Collection for testing the Express REST API in necronomiCODE.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root Endpoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Bahasa Program",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is an array', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Bahasa Program by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program",
+            "1"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Returned item has id 1', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.have.property('id', 1);",
+              "  pm.expect(responseJson).to.have.property('nama');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Bahasa Program",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nama\": \"Go\",\n  \"kategori\": \"Backend\",\n  \"dibuatOleh\": \"Google\",\n  \"tahunRilis\": 2009,\n  \"deskripsi\": \"Bahasa pemrograman yang fokus pada performa dan sistem terdistribusi.\",\n  \"fiturUtama\": [\"Concurrency\", \"High performance\", \"Simple deployment\"],\n  \"level\": \"Menengah - Mahir\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response contains created data', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.have.property('nama', 'Go');",
+              "  pm.expect(responseJson).to.have.property('kategori', 'Backend');",
+              "  pm.expect(responseJson).to.have.property('id');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Bahasa Program (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nama\": \"JavaScript Updated\",\n  \"kategori\": \"Frontend & Backend\",\n  \"dibuatOleh\": \"Brendan Eich\",\n  \"tahunRilis\": 1995,\n  \"deskripsi\": \"Bahasa pemrograman yang diperbarui untuk pengembangan web modern.\",\n  \"fiturUtama\": [\"Asynchronous programming\", \"Dynamic typing\"],\n  \"level\": \"Pemula - Mahir\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program",
+            "1"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Updated item has new name', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.have.property('nama', 'JavaScript Updated');",
+              "  pm.expect(responseJson).to.have.property('id', 1);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patch Bahasa Program",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"level\": \"Mahir\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program",
+            "1"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Patched field updated', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.have.property('level', 'Mahir');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Bahasa Program",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/bahasa-program/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "bahasa-program",
+            "1"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Deletion message exists', function () {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson).to.have.property('message');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
